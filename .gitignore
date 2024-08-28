@@ -1,0 +1,16 @@
+# Byte-compiled files
+__pycache__/
+
+# Venv
+.venv
+
+# Streamlit
+.streamlit/
+lib/streamlit/static
+streamlit-storage
+
+# VSCode
+.vscode/
+
+# Exclude data file due to size
+universal_top_spotify_songs.csv
