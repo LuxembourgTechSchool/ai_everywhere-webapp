@@ -14,6 +14,3 @@ streamlit-storage
 
 # Mac specific
 .DS_Store
-
-# Exclude data file due to size
-universal_top_spotify_songs.csv
