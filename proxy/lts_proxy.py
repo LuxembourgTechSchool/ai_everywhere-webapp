@@ -52,7 +52,10 @@ class Proxy:
                                 headers=headers, 
                                 data=payload)
         try:
-            return response.json()["response"]
+            response_string = response.json()['response']
+            if response_string.startswith("```json"):
+                response_string = response_string[7:].lstrip().rstrip('`').strip()
+            return response_string
         except Exception as e:
             print(f"Error: {response.status_code} - {response.text} - For query: {self.query}")
             return None
