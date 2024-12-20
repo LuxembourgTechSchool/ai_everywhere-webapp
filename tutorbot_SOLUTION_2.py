@@ -25,9 +25,9 @@ if tab_1.button('Generate') and len(topic) > 0:
     # Add a role to ChatGPT
     proxy.system_role = "You're a teacher for 15 year olds. Result in JSON format."
     # Add the initial question
-    proxy.question = "Generate multiple questions and answers about:"
+    proxy.question = "Generate multiple questions and answers about: "
     # Add the data
-    proxy.user_data = topic
+    proxy.topic = topic
     # Send the request and get questions and answers
     questions_answers = proxy.get_questions_and_answers()
 
@@ -51,7 +51,7 @@ file = tab_2.file_uploader('Upload a json file', type=["json"])
 if file:
     # Convert json file to a python dictionary
     file_json = json.loads(file.read())
-    tab_2.write('Data Loaded: ' + file_json["content"])
+    tab_2.write('Data Loaded: ' + file_json["topic"])
     tab_2.header('Question to answer')
 
     # Create 2 columns
@@ -80,7 +80,7 @@ if file:
         # Set the role as tutor
         proxy.system_role = "You act as a tutor for 15 year olds."
 	    # Add the whole file as user data (content, questions & answers)
-        proxy.user_data = file_json
+        proxy.tutor_input = file_json
 	    # The current answer and question are stored in the assistant instance
         proxy.answer = answer
         proxy.question = st.session_state.question

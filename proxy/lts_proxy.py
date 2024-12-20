@@ -16,12 +16,12 @@ class Proxy:
         self.lts_secret = st.secrets.lts_secret
 
     def __build_query1(self):
-        self.query = f"""{self.question}\n'{self.user_data}\n Response 
+        self.query = f"""{self.question}\n {self.topic}\n Response 
         Specifications: 
         - 3-5 diverse questions (can also include additional information)'
         - Each response should include some context or explanation.
-        - Response should be a RFC8259 compliant JSON output in 
-        the following format: 
+        - Response should be a RFC8259 compliant JSON output. 
+        - The questions and answers should be in the following format: 
         "1. What is the meaning of life?": "To find it for yourself.",
         "2. How can one find purpose in life?": "By making connections.",
         "3. What are some important life skills?": "Knowing how to adapt to change."
@@ -30,7 +30,7 @@ class Proxy:
     def __build_query2(self):
         self.query = f"""
         Evaluate this answer '{self.answer}' to this question 
-        '{self.question}'\n and its data:'{self.user_data}'\n\n
+        '{self.question}'\n and its data:'{self.tutor_input}'\n\n
         Your evaluation should explain what the question did well, 
         while highlighting missing details and suggestions for how the 
         question could be further improved. In the case that the 
@@ -59,10 +59,9 @@ class Proxy:
     
     def get_questions_and_answers(self) -> str:
         self.__build_query1()
-        json_answer: dict = {'content': self.user_data}
-        tries = 0
-        while tries < 3:
-            print(tries)
+        json_answer: dict = {'topic': self.topic}
+        tries = 1
+        while tries < 4:
             try:
                 answer = self._get_questions_and_answers()
                 print(answer)
@@ -70,8 +69,8 @@ class Proxy:
                 json_answer.update(_json_answer)
                 return json_answer
             except Exception as e:
+                print(f"Try #{tries}: Error parsing JSON: {e}")
                 tries += 1
-                print(f"{tries}:Error parsing JSON: {e}")
 
     def get_evaluation(self) -> str:
         self.__build_query2()
